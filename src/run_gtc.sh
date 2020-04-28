@@ -33,3 +33,11 @@ fairseq-train \
     --log-format json --log-interval 10 \
     --max-epoch 40 \
     | tee logs/gtc-01.log
+
+cat data/fce/fce-split.norm.fr | python src/tokenize.py \
+    | fairseq-interactive \
+    bin/gtc \
+    --path models/gtc01/checkpoint_best.pt \
+    --source-lang fr --target-lang en \
+    --beam 10 --max-len-a 1 --max-len-b 200 \
+    | python src/format_fairseq_output.py > data/fce/preds/gtc01

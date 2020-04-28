@@ -14,7 +14,7 @@ def main():
                 continue
             src, tgt = edit['src']['text'], edit['tgt']['text']
             src = src.strip().replace('\t', ' ')
-            tgt = src.strip().replace('\t', ' ')
+            tgt = tgt.strip().replace('\t', ' ')
             print(f'{src}\t{tgt}')
 
 
