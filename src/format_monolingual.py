@@ -10,6 +10,8 @@ def main():
             continue
         if len(text) < 32:
             continue
+        if len(text) > 512:
+            continue
         print(text)
 
 
