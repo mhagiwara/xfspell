@@ -47,24 +47,34 @@ for i in `seq 0 19`;
 do
     cat data/bt/bt512.norm.txt \
        | awk 'NR%20=='"$i"'' \
-       | python src/tokenize.py \
-     >> data/bt/bt512.tok.en
+     >> data/bt/bt512.en
 done
 
 for i in `seq 0 19`;
 do
     cat data/bt/bt512.mod20-$i.fr-pred \
-      | python src/tokenize.py \
-     >> data/bt/bt512.tok.fr
+     >> data/bt/bt512.fr
 done
 
-cat data/gtc/train.tok.en data/bt/bt512.tok.en > data/bt/gtc-bt512.tok.en
-cat data/gtc/train.tok.fr data/bt/bt512.tok.fr > data/bt/gtc-bt512.tok.fr
+paste data/bt/bt512.en data/bt/bt512.fr \
+  | python src/bt/filter_bitext.py \
+  | cut -f1 \
+  | python src/tokenize.py \
+  > data/bt/bt512.filtered.tok.en
+
+paste data/bt/bt512.en data/bt/bt512.fr \
+  | python src/bt/filter_bitext.py \
+  | cut -f2 \
+  | python src/tokenize.py \
+  > data/bt/bt512.filtered.tok.fr
+
+cat data/gtc/train.tok.en data/bt/bt512.filtered.tok.en > data/bt/gtc-bt512.filtered.tok.en
+cat data/gtc/train.tok.fr data/bt/bt512.filtered.tok.fr > data/bt/gtc-bt512.filtered.tok.fr
 
 fairseq-preprocess --source-lang fr --target-lang en \
-    --trainpref data/bt/gtc-bt512.tok \
+    --trainpref data/bt/gtc-bt512.filtered.tok \
     --validpref data/gtc/dev.tok \
-    --destdir bin/gtc-bt512 \
+    --destdir bin/gtc-bt512-filtered
 
 fairseq-train \
     bin/gtc-bt512 \
@@ -85,3 +95,13 @@ fairseq-train \
     --log-format json --log-interval 10 \
     --max-epoch 40 \
     | tee logs/bt01.log
+
+cat data/fce/fce-split.norm.fr | python src/tokenize.py \
+    | fairseq-interactive \
+    bin/gtc-bt512 \
+    --path models/bt01/checkpoint_best.pt \
+    --source-lang fr --target-lang en \
+    --beam 10 --max-len-a 1.2 --max-len-b 0 \
+    | python src/format_fairseq_output.py > data/fce/preds/bt01
+
+paste data/fce/fce-split.norm.fr data/fce/preds/bt01 | python src/extract_diffs.py > data/fce/preds/bt01.diffs
