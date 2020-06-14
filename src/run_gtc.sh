@@ -41,3 +41,11 @@ cat data/fce/fce-split.norm.fr | python src/tokenize.py \
     --source-lang fr --target-lang en \
     --beam 10 --max-len-a 1 --max-len-b 200 \
     | python src/format_fairseq_output.py > data/fce/preds/gtc01
+
+echo "tisimptant too spll chck ths dcment." \
+    | python src/tokenize.py \
+    | fairseq-interactive \
+    bin/gtc \
+    --path models/gtc01/checkpoint_best.pt \
+    --source-lang fr --target-lang en \
+    --beam 10 --max-len-a 1 --max-len-b 200
