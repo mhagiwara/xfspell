@@ -47,4 +47,4 @@ The books Tom and Jerry put on the yellow desk yesterday were about NLP.
 
 ## How it's built
 
-TO BE WRITTEN
+See [The Unreasonable Effectiveness of the Transformer Spell Checker](http://www.realworldnlpbook.com/blog/unreasonable-effectiveness-of-transformer-spell-checker.html).
