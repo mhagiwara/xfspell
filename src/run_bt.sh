@@ -347,18 +347,16 @@ echo "tisimptant too spll chck ths dcment." \
     --source-lang fr --target-lang en \
     --beam 10 --max-len-a 1 --max-len-b 200
 
-echo "The book Tom and Jerry put on the yellow desk yesterday war about NLP." \
+echo "The book Tom and Jerry put on the yellow desk yesterday wer about NLP." \
     | python src/tokenize.py \
     | fairseq-interactive \
     bin/gtc-bt512-owt1k-upper \
     --path models/bt05/checkpoint_best.pt \
-    --source-lang fr --target-lang en \
-    --beam 10 --max-len-a 1 --max-len-b 200
+    --source-lang fr --target-lang en --beam 10
 
-echo "The books Tom and Jerry put on the yellow desk yesterday war about NLP." \
+echo "The books Tom and Jerry put on the yellow desk yesterday wer about NLP." \
     | python src/tokenize.py \
     | fairseq-interactive \
     bin/gtc-bt512-owt1k-upper \
     --path models/bt05/checkpoint_best.pt \
-    --source-lang fr --target-lang en \
-    --beam 10 --max-len-a 1 --max-len-b 200
+    --source-lang fr --target-lang en --beam 10
