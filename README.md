@@ -1,5 +1,7 @@
 # xfspell — the Transformer Spell Checker
 
+![xfspell — the Transformer Spell Checker](xfspell.png)
+
 This is a Transformer-based English spell checker trained on 7M+ generated parallel sentences. 
 
 ## Usage
